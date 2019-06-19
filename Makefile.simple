@@ -1,0 +1,43 @@
+.PHONY: all clean
+
+all: simple_test simple_test_opt simple_test_asan simple_test_opt_asan
+
+simple_test: simple_test.o http_parser.o
+
+simple_test_opt: simple_test_opt.o http_parser_opt.o
+
+simple_test_asan: simple_test_asan.o http_parser_asan.o
+	$(CC) -o $@ $^ -lasan
+
+simple_test_opt_asan: simple_test_opt_asan.o http_parser_opt_asan.o
+	$(CC) -o $@ $^ -lasan
+
+simple_test.o: simple_test.c
+	$(CC) -c -o $@ $<
+
+simple_test_opt.o: simple_test.c
+	$(CC) -c -O2 -o $@ $<
+
+simple_test_asan.o: simple_test.c
+	$(CC) -c -fsanitize=address -o $@ $<
+
+simple_test_opt_asan.o: simple_test.c
+	$(CC) -c -O2 -fsanitize=address -o $@ $<
+
+http_parser.o: http_parser.c
+	$(CC) -c -o $@ $<
+
+http_parser_opt.o: http_parser.c
+	$(CC) -c -O2 -o $@ $<
+
+http_parser_asan.o: http_parser.c
+	$(CC) -c -fsanitize=address -o $@ $<
+
+http_parser_opt_asan.o: http_parser.c
+	$(CC) -c -O2 -fsanitize=address -o $@ $<
+
+clean:
+	-rm -f *~
+	-rm -f simple_test.o simple_test_opt.o simple_test_asan.o simple_test_opt_asan.o
+	-rm -f simple_test simple_test_opt simple_test_asan simple_test_opt_asan
+	-rm -f http_parser.o http_parser_opt.o http_parser_asan.o http_parser_opt_asan.o
