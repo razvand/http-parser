@@ -28,3 +28,15 @@ parsertrace_g
 *.sdf
 *.vsp
 *.psess
+
+# Output executables
+/asan
+/fast
+/out_asan
+/run_test
+/simple_test
+/simple_test_asan
+/simple_test_opt
+/simple_test_opt_asan
+/test_asan_fast
+/test_asan_no_opt
